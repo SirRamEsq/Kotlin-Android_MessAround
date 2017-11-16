@@ -1,21 +1,18 @@
 package com.example.pc.myapplication
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.os.Handler;
-import android.service.wallpaper.WallpaperService;
-import android.view.SurfaceHolder;
+import android.content.Context
+import android.graphics.Canvas
+import android.os.Handler
+import android.service.wallpaper.WallpaperService
+import android.view.SurfaceHolder
 
-
-import java.util.Random;
-
-class liveWallpaper : WallpaperService(){
+class NatureWallpaper : WallpaperService(){
     private var mVisible: Boolean = true  // visible flag
     var canvas: Canvas? = Canvas()      // canvas reference
     var Drawspeed: Long = 10   // thread call delay time
     var mcontext: Context? = null  //reference to the current context
 
-    override fun onCreateEngine(): liveWallpaper.LiveWall {
+    override fun onCreateEngine(): NatureWallpaper.LiveWall {
         mcontext = this // set current context
         return LiveWall() // This call contains the wallpaper code
     }
@@ -24,7 +21,7 @@ class liveWallpaper : WallpaperService(){
     This class extends the engine for the live wallpaper
     implements all the draw calls required to draw the wallpaper
      */
-    inner class LiveWall() : android.service.wallpaper.WallpaperService.Engine() {
+    inner class LiveWall : android.service.wallpaper.WallpaperService.Engine() {
 
         val mHandler = Handler() // this is to handle the thread
 
@@ -32,11 +29,11 @@ class liveWallpaper : WallpaperService(){
         //drawspeed vars set the execution speed
         private val mDrawFrame = Runnable() {
             fun run() {
-                // This method get called each time to drwaw thw frame
-                // Engine class does not provide any invlidate methods
+                // This method get called each time to draw thw frame
+                // Engine class does not provide any invalidate methods
                 // as used in canvas
                 // set your draw call here
-                drawFrame();
+                drawFrame()
             }
         }
 
@@ -83,11 +80,11 @@ class liveWallpaper : WallpaperService(){
         // the thread call this function with some delay "drawspeed"
         fun drawFrame() {
             //getting the surface holder
-            val holder = getSurfaceHolder();
+            val holder = getSurfaceHolder()
 
             canvas = null  // canvas
             try {
-                canvas = holder.lockCanvas();  //get the canvas
+                canvas = holder.lockCanvas()  //get the canvas
                 if (canvas != null) {
                     // draw something
                     // my draw code
@@ -95,21 +92,21 @@ class liveWallpaper : WallpaperService(){
                 }
             } finally {
                 if (canvas != null)
-                    holder.unlockCanvasAndPost(canvas);
+                    holder.unlockCanvasAndPost(canvas)
             }
 
             // Reschedule the next redraw
             // this is the replacement for the invilidate funtion
             // every time call the drawFrame to draw the matrix
-            mHandler.removeCallbacks(mDrawFrame);
+            mHandler.removeCallbacks(mDrawFrame)
             if (mVisible) {
                 // set the execution delay
-                mHandler.postDelayed(mDrawFrame, Drawspeed);
+                mHandler.postDelayed(mDrawFrame, Drawspeed)
             }
         }
 
         override fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-            super.onSurfaceChanged(holder, format, width, height);
+            super.onSurfaceChanged(holder, format, width, height)
             // update when surface changed
         }
     }
